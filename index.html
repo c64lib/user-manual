@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.14">
+<title>C64Lib - user manual</title>
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+
+@import url("//fonts.googleapis.com/css?family=Noto+Sans:300,600italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700");
+@import url(https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css); /* Default asciidoc style framework - important */
+
+/* CUSTOMISATIONS */
+/* Change the values in root for quick customisation. If you want even more fine grain... venture further. */
+
+:root{
+--maincolor:#FFFFFF;
+--primarycolor:#2c3e50;
+--secondarycolor:#ba3925;
+--tertiarycolor: #186d7a;
+--sidebarbackground:#CCC;
+--linkcolor:#b71c1c;
+--linkcoloralternate:#f44336;
+--white:#FFFFFF;
+--black:#000000;
+}
+
+/* Text styles */
+h1{color:var(--primarycolor) !important;}
+h2,h3,h4,h5,h6{color:var(--secondarycolor) !important;}
+.title{color:var(--tertiarycolor) !important; font-family:"Noto Sans",sans-serif !important;font-style: normal !important; font-weight: normal !important;}
+p{font-family: "Noto Sans",sans-serif !important}
+
+/* Table styles */
+th{font-family: "Noto Sans",sans-serif !important}
+
+/* Responsiveness fixes */
+video {
+  max-width: 100%;
+}
+
+@media all and (max-width: 600px) {
+table {
+  width: 55vw!important;
+  font-size: 3vw;
+}
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>C64Lib - user manual</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_overview">1. Overview</a></li>
+<li><a href="#_installation">2. Installation</a>
+<ul class="sectlevel2">
+<li><a href="#_using_gradle_as_a_build_tool">2.1. Using Gradle as a build tool</a></li>
+<li><a href="#_manual_clone_from_github">2.2. Manual clone from GitHub</a></li>
+<li><a href="#_manual_copy">2.3. Manual copy</a></li>
+</ul>
+</li>
+<li><a href="#_library_reference">3. Library reference</a>
+<ul class="sectlevel2">
+<li><a href="#_common">3.1. Common</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+This document is under development!
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The C64Lib is a set of Kick Assembler macros grouped in several libraries. They are the building blocks that can be reused in retro projects. The intention behind C64Lib is to provide retro community with modern development tools such as build support, CI assistance, dependency management, artifact versioning and comprehensive documentation.</p>
+</div>
+<div class="imageblock kroki">
+<div class="content">
+<img src="https://kroki.io/excalidraw/svg/eNrtWW1z0lgU_t5fwbBfNd73F79hUatdSwtWancc5zZJIRoSmlwKrNP_vicBSQiBVrfdcZ1mOsB9f3Luc55z7u23vUajaedjv_m80fRnrgkDLzHT5pOs_tpP0iCOoInk5TSeJG7ec2jtOH3-7FkxwnHj0WKUH_ojP7Ip9PsLyo3Gt_wTWgIvG9ty3_w5Pu1eBGeDcNpupZ9f-p_386F5p-9gEt-1JhqEftE0g3pG8Ko8hzJFRXkaeHaYoS3VDf1gMLRQiRlbVS7mfd5Aq5rUJvFXfz8O4yRb_A-UP8XSF8b9OkjiSeQVfS7NBUK86HMZhGHPzsOFhYw7nCQl8IsV-kuIuFK_GpfGYM9iFCw5GEZ-mq6NicfGDWz2-hgV75DhG7_xcsN_qs4_NMl4OU8zzQolZL6fbQzGhApMGNWrloIAWlQrj-Io5wLWFFGhiSzgBWkbSGDzWS9NmPqFGTMLvlwQZIl02QSN3qF3dDCK3NOPlrY-kC_dc45Ic9n-Kf--eVLHKA9_vE5cr2fMbGTiwevuGdpv3ZlRGCmyRimtNxklRA2juLhnRjHkIi63MMpN4jR9OjTWHf6PWMUwl0iKWlJJspVUSHMtNWf035IKt72RjF5Ok971qHXytufijil8FjpcvRjyaddTh2fnfY6CWc-evDq4C-sG0xnp64M2P0tMNMNqQveV2mSdF5hRHHnrnFOoqmJig3MY16kY5vfLOQvg07FJwHa_j5JxRRWnQska0mEst7EO4obUklEiH0bKSqx7_-WKTYP56F1__2NHHvx5SvmsU-7Q_4Au36JzjDr-aXIeTdLJ1UVyL7ztoMl5-3jePX5_MD89On579a4VffgBtSzJY7ZvnJJNueS11NX3LZeu8C_5byWXoHqYU0ZpDXMp2yqXEqirKBb4weXyJ4l7lyi-02dWvDRJEk_XOSkIXVdTIRxFCIK_LJCwGm2VwuFcakqQkIKVI_mKr8ShnGNGlMKMKqXZI3sL9ubvsim8RJMs3texl5Dt9NVIU0XL436EvtEkDFfN4zgonz2yp_jVKLYsL6x-f3pS23s7TbLn6QZDivn2KvM2Q5Pa_Xg0Ciy81HEGsoo8tSaxL4LIC6IBtH0rXMr__ra3H58yHsXuJDPAU-QgAbgohtxcISYo4qVuAzPOTL-suFnB8CPvdhC7c58KCDgeoMxOoE8IsJAaFI6kgiCJCREAVdENVLlxWpnrD33jVU0HmMttS43YoTX1wfMuWqM4UKKSuyEHawH05QIJojHdjIcElQaVIiJ1BOOEMVA6qoR6lJhbJUYBS4QGMteldmr7KZWBsbCQGv9iErNGjVxVNlnxX8jK3T0aO7CdIIlCcY0Ihii74c8cumBweDjCaQ6P_jmV2X2uL2FCDoNQLzBYTEgCsWRTYvhDS8ruhH2npAjsEAnnFckVWFaKNXlhhDoSM4k0EcAGokSNvCgHfEJKjDik52CAGq0R3FGSQjAAQmH1mIrfqjSawgmSb1Ga0jJVpeGaMgl79espzTaW5KlOhR-_lOYgR4MOcvARyMgoJFqqRnIowYQhglT2-ZOKs_tsvJ7XCEj-wFiYUMIw2kSkHYABvg0sgvyWcfzQCnTU7pwM-3Pv4EuEu32MXrN2erKpQNaf2cqduiDVnEagmvsoVXNIEo9Ccut1FJweYP-V1LXXUduEBPReSir5PehIvuWA77DbOXzTsH5avuuLI9sL_l7cf63VvjKjIJyv2SebqBUGgyjfDVjML4U4wG8D14SrDqPA88r3Rxcm9cMgylVSLYi8txSWphmPe9ZYf-WcYPXAWwIrXqZ5HfjTF3X_jMmfzD1u9m7-ARY0lxc=" alt="Diagram">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_overview">1. Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The C64Lib project consists of multiple libraries. Each library is hosted as separate GitHub repository and is plugged into CircleCI build system for Continuous Integration.</p>
+</div>
+<div class="paragraph">
+<p>There are following core libraries:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">common</dt>
+<dd>
+<p>The one that hosts some commonly used functions, macros and subroutines; no other <code>c64lib</code> library can work without it. This code is intended to be platform-independent, it complies to typical MOS 6502 assembler syntax (except it is written in KickAss, which is C64 specific at the moment).</p>
+</dd>
+<dt class="hdlist1">chipset</dt>
+<dd>
+<p>The one that hosts code that is platform specific and is dedicated to handle typical C64 chipset such as VIC-II, SID, CIA as well as typical C64 memory layout.</p>
+</dd>
+<dt class="hdlist1">text</dt>
+<dd>
+<p>The one that handles displaying text in text mode of Commodore 64 / VIC-II.</p>
+</dd>
+<dt class="hdlist1">copper64</dt>
+<dd>
+<p>Utility library that makes raster interrupt programming on VIC-II pleasant and easy.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>The diagram below describes dependencies between internal libraries of <code>c64lib</code> project. There is also an excellent <code>64spec</code> testing library used and shown as external reference.</p>
+</div>
+<div class="imageblock kroki">
+<div class="content">
+<img src="https://kroki.io/plantuml/png/eNptjUEOgzAMBO9-haXec0Ic-4Z-IQSXWJDECkZUqvr3AgpUoPo43p0de45isw3obWznzKoUUfNEoElQEzZJNQVsOZNTThHgYV1vO8Lb7FkJ62oUcgd1dTVwg2_A5Q6YQliqJ-RZRtITU3rppSdCua7gA1DEZhJz30eLBM1ATzULL0OraEte0QbK8i6_BH84c-f1f-N4rdovBjpq3w==" alt="library-dependencies">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation">2. Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The C64Lib is a set of libraries that can be used in assembly programs written with Kick Assembler. Each library consists of one or more source files that shall be then imported in Kick Assembler program. There are several methods of downloading and "installation" of libraries, some of them will be presented there starting from the most convenient one.</p>
+</div>
+<div class="sect2">
+<h3 id="_using_gradle_as_a_build_tool">2.1. Using Gradle as a build tool</h3>
+<div class="paragraph">
+<p>The easiest way to use C64Lib is to add the libraries as dependencies to the gradle build. It is an easy task due to Retro Assembler Plugin.</p>
+</div>
+<div class="sect3">
+<h4 id="_when_gradle_is_already_used">2.1.1. When Gradle is already used</h4>
+<div class="paragraph">
+<p>Well, when you are a happy user of Retro Assembler plugin, then you are even happier, because it&#8217;s extremely easy to add C64Lib to your project. The C64Lib is a GitHub project, so it can be added as GitHub dependency to your <code>gradle.build</code> file. Put the following lines into your <code>retroProject</code> section of the build file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">libFromGitHub "c64lib/common", "0.1.0"
+libFromGitHub "c64lib/chipset", "0.1.0"
+libFromGitHub "c64lib/text", "0.1.0"
+libFromGitHub "c64lib/copper64", "0.1.0"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you will be able to use all four libraries from <code>c64lib</code>. Of course not all four are mandatory. You can use any subset of them as long as you obey dependency graph as shown in [here][libraries].</p>
+</div>
+<div class="paragraph">
+<p>Retro Assembler plugin downloads all dependencies into default location:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>.ga/deps</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All libraries from <code>c64lib</code> will be downloaded under <code>c64lib</code> subfolder therefore the following location:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>.ga/deps/c64lib</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>must be added to the lib dir so that Kick Assembler will see them when interpreting <code>#import</code> directive. The following must be also a part of your <code>gradle.build</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">libDirs = [".ra/deps/c64lib"]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The complete <code>gradle.build</code> will be following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">plugins {
+    id "com.github.c64lib.retro-assembler" version "1.0.1"
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: "com.github.c64lib.retro-assembler"
+
+retroProject {
+    dialect = "KickAssembler"
+    dialectVersion = "5.9"
+    libDirs = [".ra/deps/c64lib"]
+
+    libFromGitHub "c64lib/common", "0.1.0"
+    libFromGitHub "c64lib/chipset", "0.1.0"
+    libFromGitHub "c64lib/text", "0.1.0"
+    libFromGitHub "c64lib/copper64", "0.1.0"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to build your executable you just need to execute gradle:</p>
+</div>
+<div class="listingblock">
+<div class="title">/gradlew</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">or</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">/gradlew build</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">In result C64 executables (a `prg` files) will be created.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_when_gradle_is_not_used">2.1.2. When Gradle is not used</h4>
+<div class="paragraph">
+<p>but you really want to start using it, you have to enable it first. Following steps are requires as preconditions:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Download and install JDK 8 or higher.</p>
+</li>
+<li>
+<p>Download and install Gradle.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Once it is done, you have to restart your console/terminal application and go to your project location. In your location you run Gradle to install a wrapper:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">gradle wrapper</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>then you add <code>gradle.build</code> file using following content (or similar):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">plugins {
+    id "com.github.c64lib.retro-assembler" version "1.0.1"
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: "com.github.c64lib.retro-assembler"
+
+retroProject {
+    dialect = "KickAssembler"
+    dialectVersion = "5.9"
+    libDirs = [".ra/deps/c64lib"]
+
+    libFromGitHub "c64lib/common", "0.1.0"
+    libFromGitHub "c64lib/chipset", "0.1.0"
+    libFromGitHub "c64lib/text", "0.1.0"
+    libFromGitHub "c64lib/copper64", "0.1.0"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course, the set of used libraries (with <code>libFromGitHub</code> element) may vary as well as the version of Kick Assembler.</p>
+</div>
+<div class="paragraph">
+<p>And that&#8217;s it: from now on you are able to build your project using simple <code>gradlew</code> or <code>gradlew build</code> commands. It&#8217;s not even necessary to have Gradle installed. All you need is Java 8 or higher.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_manual_clone_from_github">2.2. Manual clone from GitHub</h3>
+<div class="paragraph">
+<p>If you don&#8217;t want to or cannot use Retro Assembler plugin, you can use your git client and clone libraries manually and then just point the location with <code>-libdir</code> parameter of the KickAss.</p>
+</div>
+<div class="paragraph">
+<p>Lets assume your project has following directory layout on the disk:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>work
+  |--libs
+  +--project
+       |--SomeFile.asm
+       +--SomeOtherFile.asm</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you go to the <code>libs</code> directory (<code>cd work/libs</code>), and then clone as many libraries from <code>c64lib</code> as you need:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone https://github.com/c64lib/common.git
+git clone https://github.com/c64lib/chipset.git
+git clone https://github.com/c64lib/text.git
+git clone https://github.com/c64lib/copper64.git</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will checkout latest released version of the library (actually a top of the <code>master</code> branch, which usually means the same). In result, you will get something like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>work
+  |--libs
+  |    +--common
+  |         +--lib
+  |              |--common.asm
+  |              |--invoke.asm
+  |              |--invoke-global.asm
+  |              |--math.asm
+  |              |--math-global.asm
+  |              |--mem.asm
+  |              +--mem-global.asm
+  |    +--chipset
+  |         |--...
+  |    +--text
+  |         |--...
+  |    +--copper64
+  |         |--...
+  +--project
+       |--SomeFile.asm
+       +--SomeOtherFile.asm</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you then specify <code>-libdir</code> parameter to the KickAss appropriately, you&#8217;ll be able to use the libs (asm files in <code>lib</code> directory) with simple <code>#import</code> directive, i.e.:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>#import "common/lib/math-global.asm"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As mentioned earlier, checkout from <code>master</code> branch ensures that last released version of library is used. If you want to change it and use concrete version from the past, after <code>git clone</code> you have to enter the cloned directory (i.e. <code>cd common</code>) and checkout desired version:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git checkout 1.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(for version <code>1.0.0</code>).</p>
+</div>
+<div class="paragraph">
+<p>Assembling is then possible with manual invocation of Kick Assembler:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar c:\ka\KickAss.jar -libdir ../libs SomeFile.asm
+java -jar c:\ka\KickAss.jar -libdir ../libs SomeOtherFile.asm</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_manual_copy">2.3. Manual copy</h3>
+<div class="paragraph">
+<p>Least desired method of installation of <code>c64lib</code> is to download source code of given version and unzipping it into target directory. It is not a very convenient method, but it does not require Gradle nor Git to be installed on your computer.</p>
+</div>
+<div class="paragraph">
+<p>For every library module you have to visit GitHub and open Releases tab:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>https://github.com/c64lib/common/releases/tag/0.1.0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Under assets, you will see zipped content of the library. Download it and unzip into desired location, i.e. into <code>libs</code> directory. In result, you end up with a similar layout as with "Git clone" method (see above).</p>
+</div>
+<div class="paragraph">
+<p>You use exactly the same method to use library in your source code, i.e.:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>#import "common/lib/invoke_global.asm"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and you invoke Kick Assembler using the same syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">java -jar c:\ka\KickAss.jar -libdir ../libs SomeFile.asm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>assuming, that your <code>libs</code> directory exists on the same level as your project directory.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_library_reference">3. Library reference</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_common">3.1. Common</h3>
+<div class="paragraph">
+<p>This is a core utility library for C64lib. It is written in KickAssembler but in general it contains only the code that is portable and can be used with other architectures based on MOS 6502 (such as VIC 20, C128, 8-bit Atari etc).</p>
+</div>
+<div class="sect3">
+<h4 id="_common_asm">3.1.1. common.asm</h4>
+<div class="sect4">
+<h5 id="_neg">neg</h5>
+
+</div>
+<div class="sect4">
+<h5 id="_incargument">incArgument</h5>
+
+</div>
+<div class="sect4">
+<h5 id="_far_jumps">Far jumps</h5>
+<div class="paragraph">
+<p>A set of macros that are handy if we are not sure if at given moment a near jump is feasible, or a "far conditional jump" trick should be used.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">fbmi</dt>
+<dd>
+<p>Far <code>bmi</code> branch. Depending on the effective jump distance it uses either <code>bmi</code> or <code>bpl</code>/<code>beq</code>/<code>jmp</code> combination.</p>
+</dd>
+<dt class="hdlist1">fbne</dt>
+<dd>
+<p>Far <code>bne</code> branch. Depending on the effective jump distance it uses either <code>bne</code> or <code>beq</code>/<code>jmp</code> trick.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_invoke_asm">3.1.2. invoke.asm</h4>
+<div class="paragraph">
+<p>Helper macros for implementing subroutines. These macros basically handle parameter passing via the stack which are then stored in dedicated memory (usually allocated in unused part of the subroutine). This technique is especially handy in case the overall size of the input data cannot be realistically passed via CPU registers. Recursive calls to the subroutines are not supported.</p>
+</div>
+<div class="paragraph">
+<p>Parameters should be pushed onto the stack just before calling subroutine (which is done via <code>jsr</code> instruction). Within the subroutine, parameters must be fetched from the stack in reverse order and stored elsewhere. Before this is done, a return pointer must be preserved in order to enable return from the subroutine (a <code>rts</code> instruction). There are two macros devoted to this operation: <code>invokeStackBegin</code> and <code>invokeStackEnd</code>. These are actually combined with <code>pullParam</code> and <code>pushParam</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asm hljs" data-lang="asm">pushParamW()
+pushParamW()
+jsr subroutine
+
+// ...
+
+rotateMemRight: {
+
+  invokeStackBegin(returnPtr)
+  pullParamWList(List().add(loadFirst, loadNext, staNext, staLast))
+
+  lda loadFirst:$ffff, x
+  sta preserve
+  loop:
+    dex
+    lda loadNext:$ffff, x
+    inx
+    sta staNext:$ffff, x
+    dex
+  bne loop
+  lda preserve
+  sta staLast:$ffff
+
+  invokeStackEnd(returnPtr)
+  rts
+  // local vars
+  returnPtr:      .word 0
+  preserve:       .byte 0
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_math_asm">3.1.3. math.asm</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_mem_asm">3.1.4. mem.asm</h4>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2021-06-15 13:41:49 UTC
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/languages/asm.min.js"></script>
+<script>
+if (!hljs.initHighlighting.called) {
+  hljs.initHighlighting.called = true
+  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
+}
+</script>
+</body>
+</html>
